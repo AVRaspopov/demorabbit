@@ -1,8 +1,6 @@
 package ru.proektbg.demorabbit.config;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageListener;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -38,6 +36,31 @@ public class RabbitConfig {
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
         return new RabbitTemplate(connectionFactory);
+    }
+
+    @Bean(name = "testFanout2")
+    public Queue myQueue(){
+        return new Queue("testFanout1");
+    }
+
+    @Bean(name = "testFanout1")
+    public Queue myQueue1(){
+        return new Queue("testFanout1");
+    }
+
+    @Bean
+    public FanoutExchange fanoutExchangeA(){
+        return new FanoutExchange("amq.fanout");
+    }
+
+    @Bean
+    public Binding binding1(@Value(value = "testFanout1") Queue queue, FanoutExchange exchange){
+        return BindingBuilder.bind(queue).to(exchange);
+    }
+
+    @Bean
+    public Binding binding2(@Value(value = "testFanout2") Queue queue, FanoutExchange exchange){
+        return BindingBuilder.bind(queue).to(exchange);
     }
 
 
