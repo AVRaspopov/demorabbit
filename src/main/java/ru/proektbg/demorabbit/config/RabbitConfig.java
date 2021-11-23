@@ -3,7 +3,6 @@ package ru.proektbg.demorabbit.config;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -39,19 +38,6 @@ public class RabbitConfig {
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
         return new RabbitTemplate(connectionFactory);
-    }
-
-    @Bean
-    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory){
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
-        container.addQueueNames("testik");
-        container.setMessageListener(new MessageListener() {
-            @Override
-            public void onMessage(Message message) {
-                System.out.println("Ура! Очередь работает. Сообщение: "+new String(message.getBody()));
-            }
-        });
-        return container;
     }
 
 
