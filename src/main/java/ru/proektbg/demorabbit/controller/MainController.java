@@ -1,6 +1,5 @@
 package ru.proektbg.demorabbit.controller;
 
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +16,8 @@ public class MainController {
 
     @GetMapping("/biba")
     public String testQueue(){
-        template.setExchange("amq.fanout");
-        template.convertAndSend("", "Hello, Biba!");
+        template.setExchange("amq.topic");
+        template.convertAndSend("error.info", "Hello, Biba!");
         return "Сообщение отправлено!";
     }
 
